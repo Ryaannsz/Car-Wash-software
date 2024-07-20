@@ -24,8 +24,6 @@ public class Produto {
 	private String img;
 	
 	
-	
-	
 	public Produto(ProdutoRequestDTO data) {
 		super();
 		this.name = data.name();

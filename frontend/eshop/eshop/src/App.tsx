@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import UserMag from './pages/UserMag';
 import CadastroServico from './pages/CadastroServico';
 import CadastroAction from './pages/CadastroAction';
+import RegistroAcao from './pages/RegistroAcao';
 
 const App: React.FC = () => {
   return (
@@ -47,6 +48,14 @@ const App: React.FC = () => {
                             Cadastro de Action
                         </Link>
                     </li>
+                    <li>
+                        <Link
+                            to="/registroacao"
+                            className="hover:text-gray-200 transition duration-300"
+                        >
+                            Registro de ação
+                        </Link>
+                    </li>
                 </ul>
             </nav>
         </header>
@@ -55,6 +64,7 @@ const App: React.FC = () => {
         <Route path="/usermag" element={<UserMag />} />
         <Route path="/cadastroservico" element={<CadastroServico />} />
         <Route path="/cadastroaction" element={<CadastroAction />} />
+        <Route path="/registroacao" element={<RegistroAcao/>} />
       </Routes>
     </Router>
   );

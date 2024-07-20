@@ -24,7 +24,7 @@ const CadastroAction: React.FC = () => {
            date,
            placa,
            user_id: selectedUser?.id,
-           servico_id: selectedServico?.id
+           service_id: selectedServico?.id
         }
         mutate(dataAction)
     }
@@ -59,6 +59,7 @@ const CadastroAction: React.FC = () => {
                         <label className="block text-sm font-medium text-gray-700">Placa</label>
                         <input
                             type="text"
+                            placeholder="Digite sua placa"
                             value={placa}
                             onChange={(e) => setPlaca(e.target.value)}
                             className="mt-1 w-full px-3 py-2 border border-gray-300 rounded"
