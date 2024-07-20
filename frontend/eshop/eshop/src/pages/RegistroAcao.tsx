@@ -19,8 +19,6 @@ const Td = ({data}: {data: CombinedData}) => {
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{action.date}</td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{servico.tipo}</td>      
-            <button className="bg-green-500 hover:bg-green-600 active:bg-green-700 text-white rounded-xl w-10 h-10 flex items-center justify-center shadow-md">✔</button>
-            
         </>
     )
 }
