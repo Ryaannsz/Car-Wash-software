@@ -47,10 +47,10 @@ public class ActionController {
 	@PostMapping
 	@CrossOrigin(origins="*", allowedHeaders = "*")
 	public void addAction(@RequestBody ActionRequestDTO data) {
+
 		Servico servico = servicoRepository.findById(data.servico_id()).orElseThrow(()-> new RuntimeException("Servico não achado"));
 		User user = userRepository.findById(data.user_id()).orElseThrow(()-> new RuntimeException("User não achado"));
 		Action action = new Action(data, servico, user);
 		actionRepository.save(action);
-	}
-	
+	}	
 }

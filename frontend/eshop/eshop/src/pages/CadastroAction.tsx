@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Modal } from '../components/modal';
+import { Modal } from '../components/modals/modal';
 import { useUserData } from '../hooks/useUserData';
 import { UserData } from '../interface/UserData';
 import { useServicoData } from '../hooks/useServicoData';
 import { useActionDataMutate } from '../hooks/useActionDataMutate';
 import { ActionData } from '../interface/ActionData';
 import { ServicoData } from '../interface/ServicoData';
-import { ModalServ } from '../components/modalserv'
+import { ModalServ } from '../components/modals/modalserv'
 
 const CadastroAction: React.FC = () => {
     const [date, setDate] = useState('');
@@ -19,20 +19,20 @@ const CadastroAction: React.FC = () => {
 
 
     const submit = () =>{
-        window.location.reload();
+        window.location.reload()
         const dataAction: ActionData = {
            date,
            placa,
-           user_id: selectedUser?.id,
-           service_id: selectedServico?.id
+           servico_id: selectedServico?.id,
+           user_id: selectedUser?.id
+           
         }
         mutate(dataAction)
-    }
+   
+}
 
-   /* const submit = () => {
 
-        console.log({ date, placa, selectedServices, selectedUser });
-    };*/
+
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [isModalServOpen, setModalServOpen] = useState(false);

@@ -1,22 +1,24 @@
-import { ServicoData } from '../interface/ServicoData';
+import { UserData } from '../../interface/UserData';
 import { useState } from "react"
 
 interface ModalProps {
-    data: ServicoData[];
+    data: UserData[];
     isOpen: boolean;
     onClose: () => void;
-    onSelectServico: (servico: ServicoData) => void;
+    onSelectUser: (user: UserData) => void;
 }
 
-export function ModalServ({ isOpen, onClose, data, onSelectServico }: ModalProps) {
+export function Modal({ isOpen, onClose, data, onSelectUser }: ModalProps) {
     const [searchTerm, setSearchTerm] = useState('');
 
-    const filterUser = data.filter(servico=>
-        servico.tipo.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    const filterUser = data.filter(user =>
+        user.name.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.endereco.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.telefone.toString().includes(searchTerm)
       );
 
-      const serviceSelected = (servico: ServicoData) => {
-        onSelectServico(servico);
+      const userSelected = (user: UserData) => {
+        onSelectUser(user);
         onClose();
     };
 
@@ -28,7 +30,7 @@ export function ModalServ({ isOpen, onClose, data, onSelectServico }: ModalProps
                     <button className="absolute top-2 right-2 text-gray-600" onClick={onClose}>
                         &times;
                     </button>
-                    <h2 className="text-xl font-semibold text-center mb-4">Listagem de serviços</h2>
+                    <h2 className="text-xl font-semibold text-center mb-4">Listagem de clientes</h2>
                     <input
                         type="text"
                         placeholder="Pesquisar"
@@ -40,18 +42,20 @@ export function ModalServ({ isOpen, onClose, data, onSelectServico }: ModalProps
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preço</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Endereço</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telefone</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {filterUser.map((servico, index) => (
+                                {filterUser.map((user, index) => (
                                     <tr key={index}
-                                    onClick={()=> serviceSelected(servico)}
+                                    onClick={()=> userSelected(user)}
                                     className="cursor-pointer hover:bg-gray-100"
                                     >
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{servico.tipo}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{servico.preco}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.endereco}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.telefone}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -63,4 +67,4 @@ export function ModalServ({ isOpen, onClose, data, onSelectServico }: ModalProps
     )
 }
 
-export default ModalServ
+export default Modal
