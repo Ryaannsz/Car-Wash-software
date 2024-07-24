@@ -30,7 +30,7 @@ const CadastroServico: React.FC = () => {
 
 
     const submit = () =>{
-       // window.location.reload();
+        window.location.reload();
         const servicoData: ServicoData = {
             preco,
             tipo

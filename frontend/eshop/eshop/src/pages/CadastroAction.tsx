@@ -42,14 +42,17 @@ const CadastroAction: React.FC = () => {
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error: {error.message}</div>;
 
+//flex justify-center items-center min-h-screen bg-gray-100
+//bg-white p-6 rounded-lg shadow-md w-full max-w-md
+//space-y-4
     return (
       
 
 
 
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-                <form className="space-y-4">
+        <div className="max-w-md mx-auto bg-white rounded-lg overflow-hidden md:max-w-lg">
+            <div className="md:flex">
+                <form className="w-full p-4 px-5 py-5 space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Data</label>
                         <input
@@ -73,7 +76,7 @@ const CadastroAction: React.FC = () => {
                         <button
                             type="button"
                             onClick={() => setModalServOpen(true)}
-                            className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            className="w-full px-4 py-2 bg-indigo-500 text-white rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Selecionar Serviço
                         </button>
@@ -103,7 +106,8 @@ const CadastroAction: React.FC = () => {
                         <button
                             type="button"
                             onClick={() => setModalOpen(true)}
-                            className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            className="w-full px-4 py-2 bg-indigo-500 text-white rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            
                         >
                             Selecionar Cliente
                         </button>

@@ -6,6 +6,7 @@ import UserMag from './pages/UserMag';
 import CadastroServico from './pages/CadastroServico';
 import CadastroAction from './pages/CadastroAction';
 import RegistroAcao from './pages/RegistroAcao';
+import HistoricoAcao from './pages/HistoricoAcao'
 
 const App: React.FC = () => {
   return (
@@ -39,7 +40,7 @@ const App: React.FC = () => {
             </li>
             <li className="py-2 px-4 hover:bg-gray-700">
               <Link to="registroacao" className="flex items-center">
-                <span className="ml-3">Registro de ação</span>
+                <span className="ml-3">Registros de ações</span>
               </Link>
             </li>
           </ul>
@@ -58,6 +59,7 @@ const App: React.FC = () => {
             <Route path="/cadastroservico" element={<CadastroServico />} />
             <Route path="/cadastroaction" element={<CadastroAction />} />
             <Route path="/registroacao" element={<RegistroAcao />} />
+            <Route path="/historicoacaopast" element={<HistoricoAcao />} />
           </Routes>
         </main>
       </div>

@@ -1,61 +1,56 @@
-import { useActionData } from "../hooks/useActionData";
+
 import React, { useState } from 'react';
 import { UserData } from "../interface/UserData";
 import { ServicoData } from "../interface/ServicoData";
 import { useUserData } from "../hooks/useUserDataFindById";
-import { ActionData } from "../interface/ActionData";
-import { CombinedData } from "../interface/CombinedData";
+import { CombinedHistoricoData } from '../interface/CombinedHistoricoData';
 import { useServicoData } from "../hooks/useServicoDataFindById";
-import { Td } from "../components/tdAcao";
-import ModalRegAcao from "../components/modals/modalregacao";
-import { useActionDataRemove } from "../hooks/useActionDataRemove";
-import { useHistoricoActionDataMutate } from "../hooks/useHistoricoActionDataMutate";
+import ModalRegHistoricoAcao from "../components/modals/ModalRegHistoricoAcao";
+import { useHistoricoActionData } from "../hooks/useHistoricoActionData";
+import { useHistoricoActionDataRemove } from '../hooks/useHistoricoActionDataRemove';
+import { HistoricoActionData } from '../interface/HistoricoActionData';
+import { TdHistorico } from '../components/tdHistoricoAcao';
 
 
 const UserMag: React.FC = () => {
 
-    const [selectedAction, setActionSelected] = useState<CombinedData | null>(null);
+    const [selectedAction, setActionSelected] = useState<CombinedHistoricoData | null>(null);
     const [isModalOpen, setModalOpen] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
-    const { data: actions = [] } = useActionData();
+    const { data: historicoAction = [] } = useHistoricoActionData();
 
-    const { data: users = [] } = useUserData(actions);
-    const { data: servico = [] } = useServicoData(actions);
+    const { data: users = [] } = useUserData(historicoAction);
+    const { data: servico = [] } = useServicoData(historicoAction);
 
-    const { mutate } = useActionDataRemove();
-    const { mutate: historicoActionMutate } = useHistoricoActionDataMutate();
+    const { mutate } = useHistoricoActionDataRemove();
+
 
 
 
     //MANIPULAÇÃO E EXTRAÇÃO DE DADOS
-    const combineData = (actions: ActionData[], users: UserData[], servicos: ServicoData[]): CombinedData[] => {
-        return actions.map(action => {
-            const user = users.find(user => user.id === action.user_id);
-            const servico = servicos.find(servico => servico.id === action.service_id);
+    const combineHistoricoData = (historicoActions: HistoricoActionData[], users: UserData[], servicos: ServicoData[]): CombinedHistoricoData[] => {
+        return historicoActions.map(historicoAction => {
+            const user = users.find(user => user.id === historicoAction.user_id);
+            const servico = servicos.find(servico => servico.id === historicoAction.service_id);
             return {
-                action,
+                historicoAction,
                 user: user ? user : { id: undefined, name: '', endereco: '', telefone: '' },
                 servico: servico ? servico : { id: undefined, preco: 0, tipo: '' }
             };
-        }).filter(item => item.user.id !== undefined && item.servico.id !== undefined);;
+        }).filter(item => item.user.id !== undefined && item.servico.id !== undefined);
     };
-    const combinedArray: CombinedData[] = combineData(actions, users, servico);
+
+
+    const combinedArray: CombinedHistoricoData[] = combineHistoricoData(historicoAction, users, servico);
+
     const filterCerto = combinedArray.filter(arrayAll =>
-        arrayAll.action.placa.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-        arrayAll.action.date.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        arrayAll.historicoAction.placa.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        arrayAll.historicoAction.date.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
         arrayAll.servico.tipo.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
         arrayAll.user.name.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
-    const extractActionData = (combinedData: CombinedData) => {
-        return {
-            id: combinedData.action.id,
-            date: combinedData.action.date,
-            placa: combinedData.action.placa,
-            servico_id: combinedData.servico.id,
-            user_id: combinedData.user.id
-        };
-    }
+
     //MANIPULAÇÃO E EXTRAÇÃO DE DADOS
 
 
@@ -69,7 +64,7 @@ const UserMag: React.FC = () => {
                 <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
                     <div className="flex justify-between items-center mb-4">
                         <h1 className="text-2xl font-bold mb-4">Tabela de Ações</h1>
-                       <a href="/historicoacaopast"><button className="ml-auto w-50 px-4 py-2 bg-indigo-500 text-white rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Histórico</button></a>
+                        <a href="/registroacao"><button className="ml-auto w-50 px-4 py-2 bg-indigo-500 text-white rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Voltar</button></a>
                     </div>
                     <div className="mb-4">
                         <input
@@ -88,7 +83,8 @@ const UserMag: React.FC = () => {
                                 <th className="px-4 py-2 text-left text-gray-600">Nome</th>
                                 <th className="px-4 py-2 text-left text-gray-600">Placa</th>
                                 <th className="px-4 py-2 text-left text-gray-600">Serviço</th>
-                                <th className="px-4 py-2 text-left text-gray-600">Data</th>
+                                <th className="px-4 py-2 text-left text-gray-600">Data criado</th>
+                                <th className="px-4 py-2 text-left text-gray-600">Data finalizado</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -97,7 +93,7 @@ const UserMag: React.FC = () => {
                                     onClick={() => { setActionSelected(item); setModalOpen(true) }}
                                     className="cursor-pointer hover:bg-gray-100"
                                 >
-                                    <Td
+                                    <TdHistorico
                                         data={item}
                                     />
 
@@ -107,22 +103,13 @@ const UserMag: React.FC = () => {
 
                         </tbody>
                     </table>
-                    <ModalRegAcao
+                    <ModalRegHistoricoAcao
                         isOpen={isModalOpen}
                         onClose={() => setModalOpen(false)}
-                        onSelectServico={(acao) => {
-                            window.location.reload()
-                            setActionSelected(acao)
-                            setModalOpen(false)
-                            mutate(acao)
-                            const extractSuccefulAction: ActionData = extractActionData(acao)
-                            historicoActionMutate(extractSuccefulAction)
-                        }}
                         onSelectedServicoRemove={(acao) => {
                             window.location.reload()
                             setModalOpen(false)
                             mutate(acao)
-
                         }}
                         data={selectedAction}
 

@@ -1,14 +1,13 @@
-import { CombinedData } from "../../interface/CombinedData";
+import { CombinedHistoricoData } from "../../interface/CombinedHistoricoData";
 
 interface ModalProps {
-    data: CombinedData | null;
+    data: CombinedHistoricoData | null;
     isOpen: boolean;
     onClose: () => void;
-    onSelectServico: (action: CombinedData) => void;
-    onSelectedServicoRemove: (action: CombinedData) => void;
+    onSelectedServicoRemove: (action: CombinedHistoricoData) => void;
 }
 
-export function ModalRegAcao({ isOpen, onClose, data, onSelectServico, onSelectedServicoRemove }: ModalProps) {
+export function ModalRegHistoricoAcao({ isOpen, onClose, data, onSelectedServicoRemove }: ModalProps) {
 
     return (
         <>
@@ -35,24 +34,20 @@ export function ModalRegAcao({ isOpen, onClose, data, onSelectServico, onSelecte
                             </div>
                             <div className="p-4 bg-gray-100 rounded-lg shadow">
                                 <h3 className="text-lg font-medium text-gray-900">Informações da Ação</h3>
-                                <p><strong>Placa:</strong> {data.action.placa}</p>
-                                <p><strong>Data:</strong> {data.action.date}</p>
+                                <p><strong>Placa:</strong> {data.historicoAction.placa}</p>
+                                <p><strong>Data criado:</strong> {data.historicoAction.date}</p>
+                                <p><strong>Data finalizado:</strong> {data.historicoAction.datefinalizado}</p>
                             </div>
                         </div>
                     )}
 
                     <div className="flex justify-center space-x-4 mt-6">
-                        <button 
-                            className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600" 
-                            onClick={() => onSelectServico(data!)}
-                        >
-                            Concluir Ação
-                        </button>
+
                         <button 
                             className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600" 
                             onClick={() => onSelectedServicoRemove(data!)}
                         >
-                            Cancelar Ação
+                           Remover do histórico
                         </button>
                     </div>
                 </div>
@@ -61,4 +56,4 @@ export function ModalRegAcao({ isOpen, onClose, data, onSelectServico, onSelecte
     )
 }
 
-export default ModalRegAcao;
+export default ModalRegHistoricoAcao;
