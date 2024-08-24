@@ -17,7 +17,7 @@
       return responses.map(response => response.data);
     };
     
-    export function useServicoData(actions: ActionData[]) {
+    export function useServicoDataFindById(actions: ActionData[]) {
         return useQuery<ServicoData[], Error>({
           queryKey: ['servico-data', actions.map(action => action.service_id)],
           queryFn: () => fetchServicoData(actions),

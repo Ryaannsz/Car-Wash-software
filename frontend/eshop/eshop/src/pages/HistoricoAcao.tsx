@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import { UserData } from "../interface/UserData";
 import { ServicoData } from "../interface/ServicoData";
-import { useUserData } from "../hooks/useUserDataFindById";
+import { useUserDataFindById } from "../hooks/useUserDataFindById";
 import { CombinedHistoricoData } from '../interface/CombinedHistoricoData';
-import { useServicoData } from "../hooks/useServicoDataFindById";
+import { useServicoDataFindById } from "../hooks/useServicoDataFindById";
 import ModalRegHistoricoAcao from "../components/modals/ModalRegHistoricoAcao";
 import { useHistoricoActionData } from "../hooks/useHistoricoActionData";
 import { useHistoricoActionDataRemove } from '../hooks/useHistoricoActionDataRemove';
@@ -19,9 +19,9 @@ const UserMag: React.FC = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const { data: historicoAction = [] } = useHistoricoActionData();
-
-    const { data: users = [] } = useUserData(historicoAction);
-    const { data: servico = [] } = useServicoData(historicoAction);
+    
+    const { data: users = [] } = useUserDataFindById(historicoAction);
+    const { data: servico = [] } = useServicoDataFindById(historicoAction);
 
     const { mutate } = useHistoricoActionDataRemove();
 

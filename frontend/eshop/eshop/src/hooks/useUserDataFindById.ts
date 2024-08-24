@@ -14,7 +14,7 @@ const fetchUserData = async (actions: ActionData[]): Promise<UserData[]> => {
   return responses.map(response => response.data);
 };
 
-export function useUserData(actions: ActionData[]) {
+export function useUserDataFindById(actions: ActionData[]) {
     return useQuery<UserData[], Error>({
       queryKey: ['user-data', actions.map(action => action.user_id)],
       queryFn: () => fetchUserData(actions),
