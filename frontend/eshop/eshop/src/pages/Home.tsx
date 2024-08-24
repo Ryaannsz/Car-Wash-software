@@ -4,7 +4,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-
+import { Bar } from 'react-chartjs-2';
 import { Doughnut } from 'react-chartjs-2';
 import { UserData } from "../interface/UserData";
 import { ServicoData } from "../interface/ServicoData";
@@ -17,7 +17,7 @@ import { HistoricoActionData } from '../interface/HistoricoActionData';
 import { useServicoDataFindById } from "../hooks/useServicoDataFindById";
 
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useServicoData } from '../hooks/useServicoData';
 
 const Home: React.FC = () => {
@@ -28,17 +28,6 @@ const Home: React.FC = () => {
     const { data: servico = [] } = useServicoDataFindById(historicoAction);
     const { data: servicos = [] } = useServicoData()
 
-    /* FUNCTIONANDO
-    let soma = 0
-    const somaPrecos = (historicoActions: HistoricoActionData[], servicos: ServicoData[]): number => {
-        historicoActions.map(historicoAction => {
-            const servico = servicos.find(servico => servico.id === historicoAction.service_id);
-            if (!(servico?.preco == undefined)) {
-                soma = soma + servico?.preco
-            }
-        })
-        return soma
-    };*/
     let soma = 0
     const combineHistoricoData = (historicoActions: HistoricoActionData[], users: UserData[], servicos: ServicoData[]): CombinedHistoricoData[] => {
         return historicoActions.map(historicoAction => {
@@ -55,16 +44,7 @@ const Home: React.FC = () => {
         }).filter(item => item.user.id !== undefined && item.servico.id !== undefined);
     };
     const combinedArray: CombinedHistoricoData[] = combineHistoricoData(historicoAction, userData, servico);
-
-    /* const serviceCount = combinedArray.reduce((countMap, service) => {
-         countMap[service.servico.tipo] = (countMap[service.servico.tipo] || 0) + 1;
-         return countMap;
-     }, {} as { [key: string]: number });
- 
-     console.log(serviceCount)
-     console.log(servicos)*/
-
-
+//Sistema de cor
     const generateRandomColor = () => {
         const letters = '0123456789ABCDEF';
         let color = '#';
@@ -90,7 +70,6 @@ const Home: React.FC = () => {
         return countMap;
     }, {} as Record<string, number>);
 
-    //FZR PRIMEIRO SERVICO E QUANTIDADE DE SERVICOS
     const obj = {
         labels: servicos.map(item => item.tipo),
         datasets: [
@@ -105,9 +84,41 @@ const Home: React.FC = () => {
     ChartJS.register(ArcElement, Tooltip, Legend);
 
 
+    const [selectedOption, setSelectedOption] = useState('')
+    const [dataChart, setDataChart] = useState({ labels: [], datasets: [] })
+
+    const months = [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ];
+    
 
 
 
+    const getMounthCount = combinedArray.reduce((countMapMouth, item) =>{
+        const mouthname = new Date(item.historicoAction.datefinalizado)
+        countMapMouth[mouthname.getMonth()] = (countMapMouth[mouthname.getMonth()] || 0) + 1
+        return countMapMouth
+
+    }, {} as Record<string, number>)
+  
+
+
+
+    const dataTotal = {
+        option1: { labels: servicos.map(item => item.tipo), datasets: [{
+            label: 'Quantidade de Servicos',
+            data: servicos.map(item => serviceCount[item.tipo] || 0),
+            backgroundColor: colors
+        }]},
+        option2: { labels: months, datasets: [{
+            label: 'Quantidade de Ganhos mensasis',
+            data: months.map((_, index) => getMounthCount[index] || 0),
+            backgroundColor: colors
+        }] },
+        option3: { labels: [], datasets: [] }
+    }
+   console.log(dataTotal.option2)
 
 
     return (
