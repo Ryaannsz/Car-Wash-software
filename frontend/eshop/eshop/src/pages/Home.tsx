@@ -133,15 +133,30 @@ const Home: React.FC = () => {
                             <p className="text-2xl font-bold">{actionData.length}</p>
                         </div>
                     </div>
-                    <div className="bg-white p-6 rounded-lg shadow-lg mt-6 flex justify-center items-center">
-                        <div className="w-full max-w-lg h-auto"> 
-                            <h3 className="text-xl font-semibold mb-4 text-center">Estatísticas</h3>
-                            <Doughnut data={obj} />
+                    <div className="bg-white p-6 rounded-lg shadow-lg mt-6">
+                        <div className="grid grid-cols-2 items-start">
+                            <div className="flex items-center justify-start">
+                                <h3 className="text-xl font-semibold mb-4">Estatísticas</h3>
+                            </div>
+                            <div className="flex items-center justify-end">
+                                <select className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Selecione tipos de analise</option>
+                                    <option value="option1">Analise de serviços feitos</option>
+                                    <option value="option2">Analise de ganhos</option>
+                                    <option value="option3">EM BREVE...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="flex justify-center items-center mt-2">
+                            <div className="w-full max-w-lg h-auto mt-4">
+                                <Doughnut data={obj} />
+                            </div>
                         </div>
                     </div>
                 </main>
             </div>
         </>
+
     )
 }
 export default Home;
