@@ -25,20 +25,22 @@ import React, { useState } from 'react'
 import { useServicoData } from '../hooks/useServicoData';
 
 const Home: React.FC = () => {
+    ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
+        LinearScale,
+        BarElement,
+        Title,);
+
     const { data: actionData = [] } = useActionData();
     const { data: historicoAction = [] } = useHistoricoActionData();
     const { data: userData = [] } = useUserDataFindById(historicoAction);
     const { data: users = [] } = useUserData();
     const { data: servico = [] } = useServicoDataFindById(historicoAction);
     const { data: servicos = [] } = useServicoData()
+    const [selectedOption, setSelectedOption] = useState('option1')
+    const [viewBarOption, setViewBarOption] = useState('month')
 
-    const coinConverter = (amount: number) => {
-        return new Intl.NumberFormat('pt-BR', { 
-            style: 'currency', 
-            currency: 'BRL' 
-        }).format(amount);
-    };
 
+    //Transformando os objetos em um só
     let soma = 0
     const combineHistoricoData = (historicoActions: HistoricoActionData[], users: UserData[], servicos: ServicoData[]): CombinedHistoricoData[] => {
         return historicoActions.map(historicoAction => {
@@ -55,6 +57,7 @@ const Home: React.FC = () => {
         }).filter(item => item.user.id !== undefined && item.servico.id !== undefined);
     };
     const combinedArray: CombinedHistoricoData[] = combineHistoricoData(historicoAction, userData, servico);
+
     //Sistema de cor
     const generateRandomColor = () => {
         const letters = '0123456789ABCDEF';
@@ -83,35 +86,53 @@ const Home: React.FC = () => {
 
 
 
-    ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
-        LinearScale,
-        BarElement,
-        Title,);
+  
 
 
-    const [selectedOption, setSelectedOption] = useState('option1')
-    const [viewBarOption, setViewBarOption] = useState('month')
+ 
 
     const months = [
         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
     ];
 
-
+    //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
+    //CONFIGURAR PARA VER O MES DE CADA ANO E NAO TODOS OS MESES REFERENTE DE TODOS OS ANOS
+    //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
+    //Essa função pega a quantiade de serviços feitos em cada ano
     const getMonthCount = combinedArray.reduce((countMapMouth, item) => {
-        const mouthname = new Date(item.historicoAction.datefinalizado)
+        const mouthname = new Date(item.historicoAction.date)
         countMapMouth[mouthname.getMonth()] = (countMapMouth[mouthname.getMonth()] || 0) + 1
         return countMapMouth
 
     }, {} as Record<string, number>)
 
+ //CONFIGURAR PARA VER O MES DE CADA ANO E NAO TODOS OS MESES REFERENTE DE TODOS OS ANOS
+     //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
+    //Essa função pega o quanto ganhou em cada mes
+    const getMonthValue = combinedArray.reduce((countMapMouth, item) => {
+        const mouthname = new Date(item.historicoAction.date)
+        countMapMouth[mouthname.getMonth()] = (countMapMouth[mouthname.getMonth()] || 0) + item.servico.preco
+        return countMapMouth
+
+    }, {} as Record<string, number>)
+
+
+    //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
+    //Essa função pega a quantiade de serviços feitos em cada ano
     const getYearCount = combinedArray.reduce((countMapYear, item) => {
         const year = new Date(item.historicoAction.date).getFullYear().toString();
         countMapYear[year] = (countMapYear[year] || 0) + 1;
         return countMapYear;
     }, {} as Record<string, number>);
 
-
+    //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
+    //Essa função pega o quanto ganhou em cada ano
+    const getYearValue = combinedArray.reduce((countMapYear, item) => {
+        const year = new Date(item.historicoAction.date).getFullYear().toString();
+        countMapYear[year] = (countMapYear[year] || 0) + item.servico.preco;
+        return countMapYear;
+    }, {} as Record<string, number>);
 
     const getYeahDate = () =>{
         const anosUnicos = new Set<string>();
@@ -119,11 +140,10 @@ const Home: React.FC = () => {
            const nova = new Date(item.date)
             anosUnicos.add(nova.getFullYear().toString())
         })      
-
         const ordenados = Array.from(anosUnicos).sort((a, b) => parseInt(a) - parseInt(b));
-
         return ordenados
     }
+
     const years = getYeahDate()
 
     const optionSelected = (event: any) => {
@@ -144,25 +164,32 @@ const Home: React.FC = () => {
         option2: {
             labels: months, datasets: [{
                 label: 'Valores ganhos mensais',
-                data: months.map((_, index) => getMonthCount[index] || 0),
+                data: months.map((_, index) => getMonthValue[index] || 0),
                 backgroundColor: ['#36A2EB']
             }]
         },
         option3: { labels: years, datasets: [{
             label: 'Valores ganhos anuais',
-            data: Object.values(getYearCount),
+            data: Object.values(getYearValue),
             backgroundColor: ['#36A2EB']
         }]}
     }
 
 
 
+    const coinConverter = (amount: number) => {
+        return new Intl.NumberFormat('pt-BR', { 
+            style: 'currency', 
+            currency: 'BRL' 
+        }).format(amount);
+    };
+    
     return (
         <>
             <div className="flex h-screen bg-gray-100 font-sans antialiased">
                 <main className="flex-1 p-6">
                     <header className="flex justify-between items-center mb-6">
-                        <h2 className="text-3xl font-semibold text-gray-700">Detalhes</h2>
+                        <h2 className="text-3xl font-semibold text-gray-700">Dashboard</h2>
                     </header>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div className="bg-white p-6 rounded-lg shadow-lg">
