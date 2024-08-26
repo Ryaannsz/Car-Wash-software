@@ -32,6 +32,13 @@ const Home: React.FC = () => {
     const { data: servico = [] } = useServicoDataFindById(historicoAction);
     const { data: servicos = [] } = useServicoData()
 
+    const coinConverter = (amount: number) => {
+        return new Intl.NumberFormat('pt-BR', { 
+            style: 'currency', 
+            currency: 'BRL' 
+        }).format(amount);
+    };
+
     let soma = 0
     const combineHistoricoData = (historicoActions: HistoricoActionData[], users: UserData[], servicos: ServicoData[]): CombinedHistoricoData[] => {
         return historicoActions.map(historicoAction => {
@@ -160,7 +167,7 @@ const Home: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div className="bg-white p-6 rounded-lg shadow-lg">
                             <h3 className="text-xl font-semibold mb-4">Vendas registradas:</h3>
-                            <p className="text-2xl font-bold">R$ {soma}</p>
+                            <p className="text-2xl font-bold">{coinConverter(soma)}</p>
                         </div>
 
                         <div className="bg-white p-6 rounded-lg shadow-lg">
@@ -180,7 +187,6 @@ const Home: React.FC = () => {
                             </div>
                             <div className="flex items-center justify-end">
                                 <select className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={optionSelected}>
-                                    <option value="">Selecione tipos de analise</option>
                                     <option value="option1">Analise de serviços feitos</option>
                                     <option value="option2">Analise de ganhos</option>
                                     <option value="option3">EM BREVE...</option>
