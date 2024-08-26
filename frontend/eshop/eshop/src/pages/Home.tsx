@@ -21,7 +21,7 @@ import { HistoricoActionData } from '../interface/HistoricoActionData';
 import { useServicoDataFindById } from "../hooks/useServicoDataFindById";
 
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useServicoData } from '../hooks/useServicoData';
 
 const Home: React.FC = () => {
@@ -100,32 +100,35 @@ const Home: React.FC = () => {
     //CONFIGURAR PARA VER O MES DE CADA ANO E NAO TODOS OS MESES REFERENTE DE TODOS OS ANOS
     //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
     //Essa função pega a quantiade de serviços feitos em cada ano
-    const getMonthCount = combinedArray.reduce((countMapMouth, item) => {
+
+    /*const getMonthCount = combinedArray.reduce((countMapMouth, item) => {
         const mouthname = new Date(item.historicoAction.date)
         countMapMouth[mouthname.getMonth()] = (countMapMouth[mouthname.getMonth()] || 0) + 1
         return countMapMouth
 
-    }, {} as Record<string, number>)
+    }, {} as Record<string, number>)*/
 
     //CONFIGURAR PARA VER O MES DE CADA ANO E NAO TODOS OS MESES REFERENTE DE TODOS OS ANOS
     //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
     //Essa função pega o quanto ganhou em cada mes
-    const getMonthValue = combinedArray.reduce((countMapMouth, item) => {
+
+    /*const getMonthValue = combinedArray.reduce((countMapMouth, item) => {
         const mouthname = new Date(item.historicoAction.date)
 
         countMapMouth[mouthname.getMonth()] = (countMapMouth[mouthname.getMonth()] || 0) + item.servico.preco
         return countMapMouth
 
-    }, {} as Record<string, number>)
+    }, {} as Record<string, number>)*/
 
 
     //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
     //Essa função pega a quantiade de serviços feitos em cada ano
-    const getYearCount = combinedArray.reduce((countMapYear, item) => {
+
+   /* const getYearCount = combinedArray.reduce((countMapYear, item) => {
         const year = new Date(item.historicoAction.date).getFullYear().toString();
         countMapYear[year] = (countMapYear[year] || 0) + 1;
         return countMapYear;
-    }, {} as Record<string, number>);
+    }, {} as Record<string, number>);*/
 
     //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
     //Essa função pega o quanto ganhou em cada ano
@@ -232,19 +235,21 @@ const Home: React.FC = () => {
                         </div>
                     </div>
                     <div className="bg-white p-6 rounded-lg shadow-lg mt-6">
-                        <div className="grid grid-cols-2 items-start">
-                            <div className="flex items-center justify-start">
-                                <h3 className="text-xl font-semibold mb-4">Estatísticas</h3>
-                            </div>
-                            <div className="flex items-center justify-end">
-                                <select className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={optionSelected}>
-
-                                    <option value="option1">Analise de serviços feitos</option>
-                                    <option value="option2">Analise de ganhos</option>
-                                    <option value="option3">EM BREVE...</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-4">
+    <div className="flex items-center justify-start">
+        <h3 className="text-xl font-semibold mb-4">Estatísticas</h3>
+    </div>
+    <div className="flex items-center justify-end">
+        <select
+            className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={optionSelected}
+        >
+            <option value="option1">Análise de serviços feitos</option>
+            <option value="option2">Análise de ganhos</option>
+            <option value="option3">EM BREVE...</option>
+        </select>
+    </div>
+</div>
 
                         {selectedOption == 'option1' && (
                             <div className="flex justify-center items-center mt-2">
@@ -256,13 +261,7 @@ const Home: React.FC = () => {
                         {selectedOption == 'option2' && (
                             <div>
 
-                                <div className="flex items-center justify-end">
-                                    <select className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={yearSelected}>
-                                        {years.map(item => (
-                                            <option key={item} value={item}>{item}</option>
-                                        ))}
-                                    </select>
-                                </div>
+                                
 
                                 <div className="flex justify-center items-center mt-2">
                                     <button
@@ -278,13 +277,32 @@ const Home: React.FC = () => {
                                         Visualizar por Ano
                                     </button>
                                 </div>
-
+                                {viewBarOption==='month' && (
+                                <>
+                                <div className="flex items-center justify-start">
+                                    <select className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={yearSelected}>
+                                        {years.map(item => (
+                                            <option key={item} value={item}>{item}</option>
+                                        ))}
+                                    </select>
+                                </div>
                                 <div className="flex justify-center items-center mt-2">
                                     <div className="w-full max-w-lg h-auto mt-4">
 
-                                        <Bar data={viewBarOption === 'month' ? dataTotal.option2 : dataTotal.option3} />
+                                        <Bar data={dataTotal.option2} />
                                     </div>
                                 </div>
+                                </>
+                                )}{viewBarOption==='year' && (
+                                    <div className="flex justify-center items-center mt-2">
+                                    <div className="w-full max-w-lg h-auto mt-4">
+
+                                        <Bar data={dataTotal.option3} />
+                                    </div>
+                                </div>
+                                )}
+                                
+                                
                             </div>
                         )}
                         {selectedOption == 'option3' && (
