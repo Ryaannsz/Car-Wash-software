@@ -3,6 +3,10 @@ import {
     ArcElement, // Este é o "arc" que você precisa registrar
     Tooltip,
     Legend,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { Doughnut } from 'react-chartjs-2';
@@ -44,7 +48,7 @@ const Home: React.FC = () => {
         }).filter(item => item.user.id !== undefined && item.servico.id !== undefined);
     };
     const combinedArray: CombinedHistoricoData[] = combineHistoricoData(historicoAction, userData, servico);
-//Sistema de cor
+    //Sistema de cor
     const generateRandomColor = () => {
         const letters = '0123456789ABCDEF';
         let color = '#';
@@ -70,55 +74,80 @@ const Home: React.FC = () => {
         return countMap;
     }, {} as Record<string, number>);
 
-    const obj = {
-        labels: servicos.map(item => item.tipo),
-        datasets: [
-            {
-                label: 'Quantidade de Servicos',
-                data: servicos.map(item => serviceCount[item.tipo] || 0),
-                backgroundColor: colors
-            }
-        ]
-    }
-
-    ChartJS.register(ArcElement, Tooltip, Legend);
 
 
-    const [selectedOption, setSelectedOption] = useState('')
-    const [dataChart, setDataChart] = useState({ labels: [], datasets: [] })
+    ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
+        LinearScale,
+        BarElement,
+        Title,);
+
+
+    const [selectedOption, setSelectedOption] = useState('option1')
+    const [viewBarOption, setViewBarOption] = useState('month')
 
     const months = [
         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
     ];
-    
 
 
-
-    const getMounthCount = combinedArray.reduce((countMapMouth, item) =>{
+    const getMonthCount = combinedArray.reduce((countMapMouth, item) => {
         const mouthname = new Date(item.historicoAction.datefinalizado)
         countMapMouth[mouthname.getMonth()] = (countMapMouth[mouthname.getMonth()] || 0) + 1
         return countMapMouth
 
     }, {} as Record<string, number>)
-  
+
+    const getYearCount = combinedArray.reduce((countMapYear, item) => {
+        const year = new Date(item.historicoAction.date).getFullYear().toString();
+        countMapYear[year] = (countMapYear[year] || 0) + 1;
+        return countMapYear;
+    }, {} as Record<string, number>);
 
 
+
+    const getYeahDate = () =>{
+        const anosUnicos = new Set<string>();
+        historicoAction.map(item=>{
+           const nova = new Date(item.date)
+            anosUnicos.add(nova.getFullYear().toString())
+        })      
+
+        const ordenados = Array.from(anosUnicos).sort((a, b) => parseInt(a) - parseInt(b));
+
+        return ordenados
+    }
+    const years = getYeahDate()
+
+    const optionSelected = (event: any) => {
+        setSelectedOption(event.target.value)
+    }
+    const viewBarOptionSelected = (option: any) => {
+        setViewBarOption(option)
+    }
 
     const dataTotal = {
-        option1: { labels: servicos.map(item => item.tipo), datasets: [{
-            label: 'Quantidade de Servicos',
-            data: servicos.map(item => serviceCount[item.tipo] || 0),
-            backgroundColor: colors
-        }]},
-        option2: { labels: months, datasets: [{
-            label: 'Quantidade de Ganhos mensasis',
-            data: months.map((_, index) => getMounthCount[index] || 0),
-            backgroundColor: colors
-        }] },
-        option3: { labels: [], datasets: [] }
+        option1: {
+            labels: servicos.map(item => item.tipo), datasets: [{
+                label: 'Quantidade de Servicos',
+                data: servicos.map(item => serviceCount[item.tipo] || 0),
+                backgroundColor: colors
+            }]
+        },
+        option2: {
+            labels: months, datasets: [{
+                label: 'Valores ganhos mensais',
+                data: months.map((_, index) => getMonthCount[index] || 0),
+                backgroundColor: ['#36A2EB']
+            }]
+        },
+        option3: { labels: years, datasets: [{
+            label: 'Valores ganhos anuais',
+            data: Object.values(getYearCount),
+            backgroundColor: ['#36A2EB']
+        }]}
     }
-   console.log(dataTotal.option2)
+
 
 
     return (
@@ -150,7 +179,7 @@ const Home: React.FC = () => {
                                 <h3 className="text-xl font-semibold mb-4">Estatísticas</h3>
                             </div>
                             <div className="flex items-center justify-end">
-                                <select className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <select className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={optionSelected}>
                                     <option value="">Selecione tipos de analise</option>
                                     <option value="option1">Analise de serviços feitos</option>
                                     <option value="option2">Analise de ganhos</option>
@@ -158,11 +187,47 @@ const Home: React.FC = () => {
                                 </select>
                             </div>
                         </div>
-                        <div className="flex justify-center items-center mt-2">
-                            <div className="w-full max-w-lg h-auto mt-4">
-                                <Doughnut data={obj} />
+
+                        {selectedOption == 'option1' && (
+                            <div className="flex justify-center items-center mt-2">
+                                <div className="w-full max-w-lg h-auto mt-4">
+                                    <Doughnut data={dataTotal.option1} />
+                                </div>
                             </div>
-                        </div>
+                        )}
+                        {selectedOption == 'option2' && (
+                            <div>
+
+                                <div className="flex justify-center items-center mt-2">
+                                    <button
+                                        className={`px-4 py-2 mr-2 ${viewBarOption === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                        onClick={() => viewBarOptionSelected('month')}
+                                    >
+                                        Visualizar por Mês
+                                    </button>
+                                    <button
+                                        className={`px-4 py-2 ${viewBarOption === 'year' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                        onClick={() => viewBarOptionSelected('year')}
+                                    >
+                                        Visualizar por Ano
+                                    </button>
+                                </div>
+
+                                <div className="flex justify-center items-center mt-2">
+                                    <div className="w-full max-w-lg h-auto mt-4">
+                                      
+                                        <Bar data={viewBarOption === 'month' ? dataTotal.option2 : dataTotal.option3} />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {selectedOption == 'option3' && (
+                            <div className="flex justify-center items-center mt-2">
+                                <div className="w-full max-w-lg h-auto mt-4">
+                                    <h1>EM BREVE</h1>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </main>
             </div>
