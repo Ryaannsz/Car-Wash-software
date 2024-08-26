@@ -21,7 +21,7 @@ import { HistoricoActionData } from '../interface/HistoricoActionData';
 import { useServicoDataFindById } from "../hooks/useServicoDataFindById";
 
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useServicoData } from '../hooks/useServicoData';
 
 const Home: React.FC = () => {
@@ -38,7 +38,7 @@ const Home: React.FC = () => {
     const { data: servicos = [] } = useServicoData()
     const [selectedOption, setSelectedOption] = useState('option1')
     const [viewBarOption, setViewBarOption] = useState('month')
-
+    const [selectedYear, setSelectedYear]=useState('2024')
 
     //Transformando os objetos em um só
     let soma = 0
@@ -86,10 +86,10 @@ const Home: React.FC = () => {
 
 
 
-  
 
 
- 
+
+
 
     const months = [
         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -107,11 +107,12 @@ const Home: React.FC = () => {
 
     }, {} as Record<string, number>)
 
- //CONFIGURAR PARA VER O MES DE CADA ANO E NAO TODOS OS MESES REFERENTE DE TODOS OS ANOS
-     //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
+    //CONFIGURAR PARA VER O MES DE CADA ANO E NAO TODOS OS MESES REFERENTE DE TODOS OS ANOS
+    //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
     //Essa função pega o quanto ganhou em cada mes
     const getMonthValue = combinedArray.reduce((countMapMouth, item) => {
         const mouthname = new Date(item.historicoAction.date)
+
         countMapMouth[mouthname.getMonth()] = (countMapMouth[mouthname.getMonth()] || 0) + item.servico.preco
         return countMapMouth
 
@@ -134,12 +135,12 @@ const Home: React.FC = () => {
         return countMapYear;
     }, {} as Record<string, number>);
 
-    const getYeahDate = () =>{
+    const getYeahDate = () => {
         const anosUnicos = new Set<string>();
-        historicoAction.map(item=>{
-           const nova = new Date(item.date)
+        historicoAction.map(item => {
+            const nova = new Date(item.date)
             anosUnicos.add(nova.getFullYear().toString())
-        })      
+        })
         const ordenados = Array.from(anosUnicos).sort((a, b) => parseInt(a) - parseInt(b));
         return ordenados
     }
@@ -153,6 +154,27 @@ const Home: React.FC = () => {
         setViewBarOption(option)
     }
 
+    const yearSelected = (event: any) =>{
+        setSelectedYear(event.target.value)
+        
+    }
+
+    //NAO É DATE, É DATEFINALIZADO DATE SO PRA TESTE
+
+    const getSpecificMonth = combinedArray.reduce((countMonth, item)=>{
+        const newdate = new Date(item.historicoAction.date)
+        if(selectedYear==newdate.getFullYear().toString()){
+            countMonth[newdate.getMonth()] = (countMonth[newdate.getMonth()] || 0) + item.servico.preco
+        }
+        return countMonth
+    }, {} as Record<string, number>)
+
+  
+
+
+
+    
+
     const dataTotal = {
         option1: {
             labels: servicos.map(item => item.tipo), datasets: [{
@@ -164,26 +186,28 @@ const Home: React.FC = () => {
         option2: {
             labels: months, datasets: [{
                 label: 'Valores ganhos mensais',
-                data: months.map((_, index) => getMonthValue[index] || 0),
+                data: months.map((_, index) => getSpecificMonth[index] || 0),
                 backgroundColor: ['#36A2EB']
             }]
         },
-        option3: { labels: years, datasets: [{
-            label: 'Valores ganhos anuais',
-            data: Object.values(getYearValue),
-            backgroundColor: ['#36A2EB']
-        }]}
+        option3: {
+            labels: years, datasets: [{
+                label: 'Valores ganhos anuais',
+                data: Object.values(getYearValue),
+                backgroundColor: ['#36A2EB']
+            }]
+        }
     }
 
 
 
     const coinConverter = (amount: number) => {
-        return new Intl.NumberFormat('pt-BR', { 
-            style: 'currency', 
-            currency: 'BRL' 
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
         }).format(amount);
     };
-    
+
     return (
         <>
             <div className="flex h-screen bg-gray-100 font-sans antialiased">
@@ -214,6 +238,7 @@ const Home: React.FC = () => {
                             </div>
                             <div className="flex items-center justify-end">
                                 <select className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={optionSelected}>
+
                                     <option value="option1">Analise de serviços feitos</option>
                                     <option value="option2">Analise de ganhos</option>
                                     <option value="option3">EM BREVE...</option>
@@ -230,6 +255,14 @@ const Home: React.FC = () => {
                         )}
                         {selectedOption == 'option2' && (
                             <div>
+
+                                <div className="flex items-center justify-end">
+                                    <select className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={yearSelected}>
+                                        {years.map(item => (
+                                            <option key={item} value={item}>{item}</option>
+                                        ))}
+                                    </select>
+                                </div>
 
                                 <div className="flex justify-center items-center mt-2">
                                     <button
@@ -248,7 +281,7 @@ const Home: React.FC = () => {
 
                                 <div className="flex justify-center items-center mt-2">
                                     <div className="w-full max-w-lg h-auto mt-4">
-                                      
+
                                         <Bar data={viewBarOption === 'month' ? dataTotal.option2 : dataTotal.option3} />
                                     </div>
                                 </div>
