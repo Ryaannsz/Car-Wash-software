@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import com.example.eshop.servicos.Servico;
 import com.example.eshop.servicos.ServicoRepository;
 import com.example.eshop.users.User;
 import com.example.eshop.users.UserRepository;
+import com.example.eshop.users.UserResponseDTO;
 
 @RestController
 @RequestMapping("historicoaction")
@@ -71,5 +73,21 @@ public class HistoricoActionController {
 		historicoActionRepository.findById(id).orElseThrow(() -> new RuntimeException("Action não encontrada"));
 		historicoActionRepository.deleteById(id);
 	}
+
 	
+	
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/usuario/{userId}")
+    public ResponseEntity<List<HistoricoActionResponseDTO>> getActionsByUserId(@PathVariable Long userId) {
+        List<HistoricoAction> historicoActions = historicoActionRepository.findByUserId(userId);
+        if (historicoActions.isEmpty()) {
+            return ResponseEntity.noContent().build(); 
+        }
+        
+        List<HistoricoActionResponseDTO> response = historicoActions.stream()
+        .map(HistoricoActionResponseDTO::new)
+        .toList();
+        
+        return ResponseEntity.ok(response);
+    }
 }

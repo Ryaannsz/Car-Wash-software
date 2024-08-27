@@ -7,6 +7,7 @@ import CadastroServico from './pages/CadastroServico';
 import CadastroAction from './pages/CadastroAction';
 import RegistroAcao from './pages/RegistroAcao';
 import HistoricoAcao from './pages/HistoricoAcao';
+import PaginaCliente from './pages/PaginaCliente';
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,6 +80,7 @@ const App: React.FC = () => {
               <Route path="/cadastroaction" element={<CadastroAction />} />
               <Route path="/registroacao" element={<RegistroAcao />} />
               <Route path="/historicoacaopast" element={<HistoricoAcao />} />
+              <Route path="/clientepag/:id" element={<PaginaCliente />} />
             </Routes>
           </main>
         </div>

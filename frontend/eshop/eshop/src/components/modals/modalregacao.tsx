@@ -1,4 +1,6 @@
 import { CombinedData } from "../../interface/CombinedData";
+import { useNavigate } from 'react-router-dom';
+
 
 interface ModalProps {
     data: CombinedData | null;
@@ -9,6 +11,11 @@ interface ModalProps {
 }
 
 export function ModalRegAcao({ isOpen, onClose, data, onSelectServico, onSelectedServicoRemove }: ModalProps) {
+
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate(`/clientepag/${data?.user.id}`);
+      };
 
     return (
         <>
@@ -22,11 +29,16 @@ export function ModalRegAcao({ isOpen, onClose, data, onSelectServico, onSelecte
 
                     {data && (
                         <div className="space-y-4">
-                            <div className="p-4 bg-gray-100 rounded-lg shadow">
-                                <h3 className="text-lg font-medium text-gray-900">Informações do Usuário</h3>
-                                <p><strong>Nome:</strong> {data.user.name}</p>
-                                <p><strong>Endereço:</strong> {data.user.endereco}</p>
-                                <p><strong>Telefone:</strong> {data.user.telefone}</p>
+                            <div className="p-4 bg-gray-100 rounded-lg shadow flex justify-between items-center">
+                                <div>
+                                    <h3 className="text-lg font-medium text-gray-900">Informações do Usuário</h3>
+                                    <p><strong>Nome:</strong> {data.user.name}</p>
+                                    <p><strong>Endereço:</strong> {data.user.endereco}</p>
+                                    <p><strong>Telefone:</strong> {data.user.telefone}</p>
+                                </div>
+                                <button onClick={handleClick} className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">
+                                    Ir à página do cliente
+                                </button>
                             </div>
                             <div className="p-4 bg-gray-100 rounded-lg shadow">
                                 <h3 className="text-lg font-medium text-gray-900">Detalhes do Serviço</h3>

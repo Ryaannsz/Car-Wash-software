@@ -7,6 +7,7 @@ export function TdHistorico({data}: {data: CombinedHistoricoData}) {
     const dateFinalizado = new Date(historicoAction.datefinalizado)
     let formattedDate = date.getDate() < 10 ? '0' + date.getDate() : date.getDate().toString()
     let formattedDateFinalizado = dateFinalizado.getDate() < 10 ? '0' + dateFinalizado.getDate() : dateFinalizado.getDate().toString()
+    
     return (
         <>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
