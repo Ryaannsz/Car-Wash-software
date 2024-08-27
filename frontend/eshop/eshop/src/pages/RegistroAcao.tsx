@@ -92,7 +92,10 @@ const UserMag: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filterCerto.map((item, index) => (
+                            {filterCerto
+                            .sort((a, b) => a.action.date.localeCompare(b.action.date))
+                            .map((item, index) => (
+                                
                                 <tr key={index}
                                     onClick={() => { setActionSelected(item); setModalOpen(true) }}
                                     className="cursor-pointer hover:bg-gray-100"

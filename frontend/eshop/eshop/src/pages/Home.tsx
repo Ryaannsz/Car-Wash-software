@@ -230,7 +230,7 @@ const Home: React.FC = () => {
                         </div>
 
                         <div className="bg-white p-6 rounded-lg shadow-lg">
-                            <h3 className="text-xl font-semibold mb-4">Total Ações ativas</h3>
+                            <h3 className="text-xl font-semibold mb-4">Total ações ativas</h3>
                             <p className="text-2xl font-bold">{actionData.length}</p>
                         </div>
                     </div>
@@ -281,7 +281,7 @@ const Home: React.FC = () => {
                                 <>
                                 <div className="flex items-center justify-start">
                                     <select className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={yearSelected}>
-                                        {years.map(item => (
+                                        {years.reverse().map(item => (
                                             <option key={item} value={item}>{item}</option>
                                         ))}
                                     </select>
