@@ -3,6 +3,7 @@ package com.example.eshop.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.example.eshop.action.ActionResponseDTO;
+import com.example.eshop.historicoAction.HistoricoAction;
+import com.example.eshop.historicoAction.HistoricoActionResponseDTO;
 import com.example.eshop.servicos.Servico;
 import com.example.eshop.servicos.ServicoRepository;
 import com.example.eshop.users.User;
@@ -62,4 +65,18 @@ public class ActionController {
 		actionRepository.findById(id).orElseThrow(() -> new RuntimeException("Action não encontrada"));
 		actionRepository.deleteById(id);
 	}
+	
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/usuario/{userId}")
+    public ResponseEntity<List<ActionResponseDTO>> getActionsByUserId(@PathVariable Long userId) {
+        List<Action> action = actionRepository.findByUserId(userId);
+        if (action.isEmpty()) {
+            return ResponseEntity.noContent().build(); 
+        }
+        List<ActionResponseDTO> response = action.stream()
+        .map(ActionResponseDTO::new)
+        .toList();
+        return ResponseEntity.ok(response);
+    }
+	
 }

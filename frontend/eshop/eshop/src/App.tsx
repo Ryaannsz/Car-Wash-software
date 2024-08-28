@@ -8,6 +8,7 @@ import CadastroAction from './pages/CadastroAction';
 import RegistroAcao from './pages/RegistroAcao';
 import HistoricoAcao from './pages/HistoricoAcao';
 import PaginaCliente from './pages/PaginaCliente';
+import SearchCliente from './pages/SearchCliente';
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,6 +59,11 @@ const App: React.FC = () => {
                   <span className="ml-3">Registros de ações</span>
                 </Link>
               </li>
+              <li className="py-2 px-4 hover:bg-gray-700">
+                <Link to="searchcliente" className="flex items-center">
+                  <span className="ml-3">Procurar Cliente</span>
+                </Link>
+              </li>
             </ul>
           </nav>
         </aside>
@@ -81,6 +87,7 @@ const App: React.FC = () => {
               <Route path="/registroacao" element={<RegistroAcao />} />
               <Route path="/historicoacaopast" element={<HistoricoAcao />} />
               <Route path="/clientepag/:id" element={<PaginaCliente />} />
+              <Route path="/searchcliente" element={<SearchCliente />} />
             </Routes>
           </main>
         </div>

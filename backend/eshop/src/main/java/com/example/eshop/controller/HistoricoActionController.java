@@ -83,7 +83,6 @@ public class HistoricoActionController {
         if (historicoActions.isEmpty()) {
             return ResponseEntity.noContent().build(); 
         }
-        
         List<HistoricoActionResponseDTO> response = historicoActions.stream()
         .map(HistoricoActionResponseDTO::new)
         .toList();

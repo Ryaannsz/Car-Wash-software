@@ -19,10 +19,8 @@ const UserMag: React.FC = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const { data: historicoAction = [] } = useHistoricoActionData();
-    
     const { data: users = [] } = useUserDataFindById(historicoAction);
     const { data: servico = [] } = useServicoDataFindById(historicoAction);
-
     const { mutate } = useHistoricoActionDataRemove();
 
 
@@ -40,10 +38,7 @@ const UserMag: React.FC = () => {
             };
         }).filter(item => item.user.id !== undefined && item.servico.id !== undefined);
     };
-
-
     const combinedArray: CombinedHistoricoData[] = combineHistoricoData(historicoAction, users, servico);
-
     const filterCerto = combinedArray.filter(arrayAll =>
         arrayAll.historicoAction.placa.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
         arrayAll.historicoAction.date.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
