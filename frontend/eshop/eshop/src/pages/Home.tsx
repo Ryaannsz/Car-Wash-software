@@ -38,7 +38,7 @@ const Home: React.FC = () => {
     const { data: servicos = [] } = useServicoData()
     const [selectedOption, setSelectedOption] = useState('option1')
     const [viewBarOption, setViewBarOption] = useState('month')
-    const [selectedYear, setSelectedYear]=useState('2024')
+    const [selectedYear, setSelectedYear]=useState('')
 
     //Transformando os objetos em um só
     let soma = 0
@@ -152,6 +152,7 @@ const Home: React.FC = () => {
 
     const optionSelected = (event: any) => {
         setSelectedOption(event.target.value)
+        setSelectedYear(years[years.length-1])
     }
     const viewBarOptionSelected = (option: any) => {
         setViewBarOption(option)

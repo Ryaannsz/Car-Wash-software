@@ -145,6 +145,7 @@ const PaginaCliente = () => {
                         <td className="py-2 px-4 text-center ">{item.placa}</td>
                         <td className="py-2 px-4 text-center">{item.servico?.tipo}</td>
                         <td className="py-2 px-4 text-center">{item.date}</td>
+
                         <td className="py-2 px-4 text-center">
                             <span className="px-2 py-1 rounded-full text-white bg-gray-500">Em andamento</span>
                         </td>
