@@ -1,14 +1,14 @@
-# Usando uma imagem base do JDK (pode ser openjdk:11-jdk-alpine ou outra versão que você utiliza)
+# Use a imagem base do OpenJDK
 FROM openjdk:17-jdk-alpine
 
-# Definindo o diretório de trabalho dentro do contêiner
+# Defina o diretório de trabalho
 WORKDIR /app
 
-# Copiando o JAR gerado para o contêiner
+# Copie o arquivo JAR para o contêiner
 COPY target/eshop-0.0.1-SNAPSHOT.jar /app/app.jar
 
-# Expondo a porta da aplicação
+# Exponha a porta da aplicação
 EXPOSE 8080
 
-# Comando para executar a aplicação
+# Comando para iniciar a aplicação
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
