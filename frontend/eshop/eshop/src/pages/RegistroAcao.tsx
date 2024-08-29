@@ -32,7 +32,8 @@ const UserMag: React.FC = () => {
     const combineData = (actions: ActionData[], users: UserData[], servicos: ServicoData[]): CombinedData[] => {
         return actions.map(action => {
             const user = users.find(user => user.id === action.user_id);
-            const servico = servicos.find(servico => servico.id === action.service_id);
+            //
+            const servico = servicos.find(servico => servico.id === action.servico_id);
             return {
                 action,
                 user: user ? user : { id: undefined, name: '', endereco: '', telefone: '' },

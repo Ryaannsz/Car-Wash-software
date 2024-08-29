@@ -10,8 +10,10 @@
     const fetchServicoData = async (actions: ActionData[]): Promise<ServicoData[]> => {
       
         const validId = actions
-        .filter(action => action.service_id!==undefined)
-        .map(action => axios.get(`${API_URL}/servico/${action.service_id}`));
+        //
+        .filter(action => action.servico_id!==undefined)
+        //
+        .map(action => axios.get(`${API_URL}/servico/${action.servico_id}`));
         
       const responses = await Promise.all(validId);
       return responses.map(response => response.data);
@@ -19,7 +21,8 @@
     
     export function useServicoDataFindById(actions: ActionData[]) {
         return useQuery<ServicoData[], Error>({
-          queryKey: ['servico-data', actions.map(action => action.service_id)],
+          //
+          queryKey: ['servico-data', actions.map(action => action.servico_id)],
           queryFn: () => fetchServicoData(actions),
           enabled: actions.length > 0,
         });

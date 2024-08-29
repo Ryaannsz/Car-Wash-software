@@ -13,7 +13,7 @@ const SearchCliente: React.FC = () => {
         user.name.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleUserClick = (id: number) => {
+    const handleUserClick = (id: number | undefined) => {
         navigate(`/clientepag/${id}`);
     };
     

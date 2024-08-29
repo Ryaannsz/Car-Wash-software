@@ -45,7 +45,8 @@ const Home: React.FC = () => {
     const combineHistoricoData = (historicoActions: HistoricoActionData[], users: UserData[], servicos: ServicoData[]): CombinedHistoricoData[] => {
         return historicoActions.map(historicoAction => {
             const user = users.find(user => user.id === historicoAction.user_id);
-            const servico = servicos.find(servico => servico.id === historicoAction.service_id);
+            //
+            const servico = servicos.find(servico => servico.id === historicoAction.servico_id);
             if (!(servico?.preco == undefined)) {
                 soma = soma + servico?.preco
             }
@@ -67,8 +68,6 @@ const Home: React.FC = () => {
         }
         return color;
     };
-
-
     const generateColor = (numColors: number) => {
         const colors = [];
         for (let i = 0; i < numColors; i++) {
@@ -132,6 +131,8 @@ const Home: React.FC = () => {
 
     //CERTO é item.historicoAction.datefinalizado POREM PRA TESTE USEI O DATE APENAS
     //Essa função pega o quanto ganhou em cada ano
+
+
     const getYearValue = combinedArray.reduce((countMapYear, item) => {
         const year = new Date(item.historicoAction.date).getFullYear().toString();
         countMapYear[year] = (countMapYear[year] || 0) + item.servico.preco;

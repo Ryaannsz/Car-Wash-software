@@ -1,5 +1,4 @@
 
-import React from 'react';
 import { useActionDataFindById } from '../hooks/useActionDataFindById';
 import { useUserDataFindById } from '../hooks/useUserDataFindById';
 import { useServicoDataFindById } from '../hooks/useServicoDataFindById';
@@ -7,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { ActionData } from '../interface/ActionData';
 import { useHistoricoActionDataFindById } from '../hooks/useHistoricoActionById';
 import { HistoricoActionData } from '../interface/HistoricoActionData';
-import { CombinedHistoricoData } from '../interface/CombinedHistoricoData';
+
 import { ServicoData } from '../interface/ServicoData';
 import { useNavigate } from 'react-router-dom';
 
@@ -41,12 +40,17 @@ const PaginaCliente = () => {
     const { data: users = [] } = useUserDataFindById(actionDataArray);
     const {data: historicoaction = []} = useHistoricoActionDataFindById(actionDataArray)
     const { data: servico = []} =useServicoDataFindById(historicoaction.flat())
+    
     const {data: action = []}=useActionDataFindById(actionDataArray)
+    const {data: servicoOn =[]} = useServicoDataFindById(action.flat())
     const navigate = useNavigate();
 
+  
+
     const handleBack= () => {
-        navigate(-1); // Volta para a página anterior
+        navigate(-1); 
     };
+
 
     //combinar data Historico_Servico
     const combineData = (
@@ -67,7 +71,8 @@ const PaginaCliente = () => {
         servicoArray: ServicoData[]
     ): Historico_Servico[] => {
         return historicoArray.map((historico) => {
-            const servico = servicoArray.find((s) => s.id === historico.service_id);
+            //
+            const servico = servicoArray.find((s) => s.id === historico.servico_id);
             return combineData(historico, servico);
         });
     };
@@ -93,19 +98,12 @@ const PaginaCliente = () => {
         servicoArray: ServicoData[]
     ): Action_Servico[] => {
         return actionArray.map((action) => {
-            const servico = servicoArray.find((s) => s.id === action.service_id);
+            //
+            const servico = servicoArray.find((s) => s.id === action.servico_id);
             return combineActionData(action, servico);
         });
     };
-    const action_serv = combineActionDataArray(action.flat(), servico);
-    //combinar data Action_Servico
-   
-    //console.log("Action servico")
-    //console.log(action_serv)
-    ///console.log("Historico servico")
-    //console.log(hist_serv)
-
-
+    const action_serv = combineActionDataArray(action.flat(), servicoOn);
 
 
 
@@ -120,6 +118,7 @@ const PaginaCliente = () => {
         >
             Voltar
         </button>
+
 
     </div>
     <div className="bg-white p-6 rounded-lg shadow-lg">

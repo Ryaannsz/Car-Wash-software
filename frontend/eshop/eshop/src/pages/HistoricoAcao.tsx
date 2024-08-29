@@ -30,7 +30,8 @@ const UserMag: React.FC = () => {
     const combineHistoricoData = (historicoActions: HistoricoActionData[], users: UserData[], servicos: ServicoData[]): CombinedHistoricoData[] => {
         return historicoActions.map(historicoAction => {
             const user = users.find(user => user.id === historicoAction.user_id);
-            const servico = servicos.find(servico => servico.id === historicoAction.service_id);
+            //
+            const servico = servicos.find(servico => servico.id === historicoAction.servico_id);
             return {
                 historicoAction,
                 user: user ? user : { id: undefined, name: '', endereco: '', telefone: '' },
