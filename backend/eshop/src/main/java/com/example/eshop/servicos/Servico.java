@@ -19,8 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity(name="servicos")
 
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @EqualsAndHashCode(of="id")
 public class Servico {
 	

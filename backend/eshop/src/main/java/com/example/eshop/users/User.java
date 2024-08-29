@@ -13,12 +13,12 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import com.example.eshop.users.UserRequestDTO;
 
 @Table(name="users")
 @Entity(name="users")
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @EqualsAndHashCode(of="id")
 public class User {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
