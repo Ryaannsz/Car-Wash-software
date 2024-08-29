@@ -227,12 +227,12 @@ const Home: React.FC = () => {
                         </div>
 
                         <div className="bg-white p-6 rounded-lg shadow-lg">
-                            <h3 className="text-xl font-semibold mb-4">Total de clientes</h3>
+                            <h3 className="text-xl font-semibold mb-4">Total de clientes:</h3>
                             <p className="text-2xl font-bold">{users.length}</p>
                         </div>
 
                         <div className="bg-white p-6 rounded-lg shadow-lg">
-                            <h3 className="text-xl font-semibold mb-4">Total ações ativas</h3>
+                            <h3 className="text-xl font-semibold mb-4">Total ações ativas:</h3>
                             <p className="text-2xl font-bold">{actionData.length}</p>
                         </div>
                     </div>
