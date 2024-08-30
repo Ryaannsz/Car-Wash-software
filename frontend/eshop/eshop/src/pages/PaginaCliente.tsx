@@ -134,6 +134,7 @@ const PaginaCliente = () => {
                 <tr>
                     <th className="py-2 px-4">Placa</th>
                     <th className="py-2 px-4">Serviço</th>
+                    <th className="py-2 px-4">Preço</th>
                     <th className="py-2 px-4">Data Criado</th>
                     <th className="py-2 px-4">Status</th>
                 </tr>
@@ -143,6 +144,7 @@ const PaginaCliente = () => {
                     <tr key={index} className="border-b cursor-pointer hover:bg-gray-100">
                         <td className="py-2 px-4 text-center ">{item.placa}</td>
                         <td className="py-2 px-4 text-center">{item.servico?.tipo}</td>
+                        <td className="py-2 px-4 text-center">{item.servico?.preco}</td>
                         <td className="py-2 px-4 text-center">{item.date}</td>
 
                         <td className="py-2 px-4 text-center">
