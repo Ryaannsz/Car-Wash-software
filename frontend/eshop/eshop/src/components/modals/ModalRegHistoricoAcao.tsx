@@ -15,6 +15,15 @@ export function ModalRegHistoricoAcao({ isOpen, onClose, data, onSelectedServico
         navigate(`/clientepag/${data?.user.id}`);
       };
 
+      const coinConverter = (amount: number | undefined) => {
+        if(!(amount==undefined)){
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(amount);
+        }
+    };
+
     return (
         <>
             <div className={`fixed inset-0 flex items-center justify-center ${isOpen ? 'block' : 'hidden'}`}>
@@ -48,7 +57,7 @@ export function ModalRegHistoricoAcao({ isOpen, onClose, data, onSelectedServico
                             <div className="p-4 bg-gray-100 rounded-lg shadow">
                                 <h3 className="text-lg font-medium text-gray-900">Detalhes do Serviço</h3>
                                 <p><strong>Tipo:</strong> {data.servico.tipo}</p>
-                                <p><strong>Preço:</strong> {data.servico.preco}</p>
+                                <p><strong>Preço:</strong> {coinConverter(data.servico.preco)}</p>
                             </div>
                             <div className="p-4 bg-gray-100 rounded-lg shadow">
                                 <h3 className="text-lg font-medium text-gray-900">Informações da Ação</h3>

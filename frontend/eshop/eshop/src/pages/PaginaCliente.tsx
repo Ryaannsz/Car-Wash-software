@@ -105,7 +105,14 @@ const PaginaCliente = () => {
     };
     const action_serv = combineActionDataArray(action.flat(), servicoOn);
 
-
+    const coinConverter = (amount: number | undefined) => {
+        if(!(amount==undefined)){
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(amount);
+        }
+    };
 
 
     return (
@@ -144,7 +151,7 @@ const PaginaCliente = () => {
                     <tr key={index} className="border-b cursor-pointer hover:bg-gray-100">
                         <td className="py-2 px-4 text-center ">{item.placa}</td>
                         <td className="py-2 px-4 text-center">{item.servico?.tipo}</td>
-                        <td className="py-2 px-4 text-center">{item.servico?.preco}</td>
+                        <td className="py-2 px-4 text-center">{coinConverter(item.servico?.preco)}</td>
                         <td className="py-2 px-4 text-center">{item.date}</td>
 
                         <td className="py-2 px-4 text-center">

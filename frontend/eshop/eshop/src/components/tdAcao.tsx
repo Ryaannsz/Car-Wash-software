@@ -7,6 +7,7 @@ export function Td({data}: {data: CombinedData}) {
     let formattedDay = date.getDate() < 10 ? '0' + date.getDate() : date.getDate().toString()
     
     
+    
     return (
         <>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
