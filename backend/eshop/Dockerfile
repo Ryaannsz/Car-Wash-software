@@ -1,14 +1,26 @@
-# Use a imagem base do OpenJDK
+
 FROM openjdk:17-jdk-alpine
 
-# Defina o diretório de trabalho
-WORKDIR /app
 
-# Copie o arquivo JAR para o contêiner
-COPY target/eshop-0.0.1-SNAPSHOT.jar /app/app.jar
 
-# Exponha a porta da aplicação
-EXPOSE 8080
 
-# Comando para iniciar a aplicação
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+RUN apk update && apk add --no-cache maven
+
+
+WORKDIR /usr/local/service
+
+
+
+
+COPY pom.xml /usr/local/service/pom.xml
+COPY src /usr/local/service/src
+
+
+
+RUN mvn clean package
+
+
+COPY target/*.jar /app/app.jar
+
+
+CMD ["java", "-jar", "/app/app.jar"]
