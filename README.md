@@ -34,7 +34,7 @@ A modern full-stack application to manage a car wash business. This platform all
 
 ## 📁 Project Structure
 ```
-lava-jato-software/
+car-wash-software/
 ├── backend/ # Spring Boot backend
 │ ├── src/ # Java code and resources
 │ ├── pom.xml # Maven configuration
